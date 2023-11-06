@@ -9,8 +9,8 @@ const Header: FC<HeaderProps> = () => {
                     <li className='flex'>
                         <Image src="/assets/logo.svg" alt="logo" width="200" height="300" />
                         <div className='ml-8'>
-                            <a href="#" className='px-2 text-sm hover:text-gray-600'>Recipes</a>
-                            <a href="#" className='px-2 text-sm hover:text-gray-600'>About</a>
+                            <a href="#" className='px-2 text-sm hover:text-gray-600 text-black'>Recipes</a>
+                            <a href="#" className='px-2 text-sm hover:text-gray-600 text-black'>Ingrédients</a>
                         </div>
                     </li>
                     <div className='flex'>
@@ -18,13 +18,13 @@ const Header: FC<HeaderProps> = () => {
                             <span className='text-gray-400'>|</span>
                         </li>
                         <li className=''>
-                            <a href="#" className='px-2 text-sm hover:text-gray-600'>Signup</a>
+                            <a href="#" className='px-2 text-sm hover:text-gray-600 text-black'>Signup</a>
                         </li>
                         <li className=''>
                             <span className='text-gray-400'>|</span>
                         </li>
                         <li className=''>
-                            <a href="#" className='px-2 text-sm hover:text-gray-600'>Login</a>
+                            <a href="#" className='px-2 text-sm hover:text-gray-600 text-black'>Login</a>
                         </li>
                     </div>
                 </ul>
