@@ -16,7 +16,9 @@ export const recipeApi = api.injectEndpoints({
                 method: "GET",
             })
         }),
-        getSuggestions: build.query<Recipe[], string>({
+        getSuggestions: build.query<{
+            data: Recipe[]
+        }, string>({
             query: (id) => ({
                 url: `/recipes/${id}/suggestions`,
                 method: "GET",
