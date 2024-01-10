@@ -33,7 +33,7 @@ function Recipe() {
             <h3 className="text-white text-xl font-bold">{recipe.title}</h3>
             <p
               dangerouslySetInnerHTML={{
-                __html: truncate(recipe.description??"", 100),
+                __html: truncate(recipe.description ?? "", 100),
               }}
               className="text-white text-sm"
             />
@@ -58,7 +58,9 @@ function Recipe() {
         <h3>{recipe?.title}</h3>
         <div dangerouslySetInnerHTML={{ __html: recipe.instructions }} />
       </article>
-
+      <button className="mt-6 bg-blue-500 text-white px-4 py-2 rounded-md">
+        Suggest suppelement
+      </button>
       <SuggestRecipe recipeId={recipeId} />
     </div>
   );
