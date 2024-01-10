@@ -35,7 +35,6 @@ export async function getMessage(messages: sentToGpt[], prompt: string) {
             max_tokens: 400,
             temperature: 0.9,
         })
-        console.log("🚀 ~ getMessage ~ gptResponse:", gptResponse)
-        return gptResponse.data.choices[0].message.content
+        return gptResponse.choices[0].message.content
 
 }
