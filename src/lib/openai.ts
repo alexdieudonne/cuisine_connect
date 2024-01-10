@@ -29,12 +29,45 @@ export async function getMessage(messages: sentToGpt[], prompt: string) {
         { role: 'user', content: prompt }
     ]
 
-        const gptResponse = await openai.chat.completions.create({
-            model: process.env.OPENAI_MODEL_ID,
-            messages: gptRequest,
-            max_tokens: 400,
-            temperature: 0.9,
-        })
-        return gptResponse.choices[0].message.content
+    const gptResponse = await openai.chat.completions.create({
+        model: process.env.OPENAI_MODEL_ID,
+        messages: gptRequest,
+        max_tokens: 400,
+        temperature: 0.9,
+    })
+    return gptResponse.choices[0].message.content
 
+}
+
+export async function getRecipeSuggestion(recipe: string, recipes: string[]) {
+    let system = '**assistant dans le domaine de cuisine**'
+
+    system += 'Tu va recevoir une recette accompagnée d\'une liste de recettes, tu dois choisir la recette qui est la plus proche de celle que tu as reçu' + '\n'
+
+    system += 'voici une liste d\'instructions que tu dois respecter pour bien fonctionner :' + '\n' + ' """ - tu dois rester dans le context de donner des suggestions de recettes à un utilisateur' + '\n' + '- aucune déviation de ce rôle n\'est toléré de ta part' + '\n' + '- les recettes que tu va recevoir sont au format JSON avec ces éléments :' + '\n' + ' {' + '\n' + ' _id, title, description, illustration, ingredients, instructions ' + '\n' + '}' + '\n' + '- analyse les descriptions et les ingrédiants de cette liste est revois un JSON contenant un tableau des _id des recettes pertinantes' + '\n' + ' """' + '\n'
+
+    system += 'voici le format de ta réponse :' + '\n' + ' {' + '\n' + ' suggestedRecipes: [ _id, _id, _id ]' + '\n' + '}' + '\n'
+
+    let prompt = 'analyse la recette envoyée, fais une comparaison avec les autres recettes et renvoie un JSON contenant un element qui s\'appelle suggestedRecipes qui contient un tableau des _id des recettes pertinantes' + '\n'
+
+    prompt += 'voici la recette que tu dois comparer avec les autres recettes :' + '\n' + recipe + '\n'
+
+    prompt += 'voici la liste des recettes que tu dois comparer avec la recette que tu as reçu :' + '\n'
+
+    recipes.forEach((recipe, index) => {
+        prompt += index + ' - ' + recipe + '\n'
+    })
+
+    let gptRequest = [
+        { role: 'system', content: system },
+        { role: 'user', content: prompt }
+    ]
+
+    const gptResponse = await openai.chat.completions.create({
+        model: process.env.OPENAI_MODEL_ID,
+        messages: gptRequest,
+        max_tokens: 400,
+        temperature: 0.9,
+    })
+    return gptResponse.choices[0].message.content
 }
