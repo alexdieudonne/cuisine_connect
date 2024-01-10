@@ -5,6 +5,8 @@ import Header from "@/components/Header";
 import Image from "next/image";
 import CardRecipe from "@/components/home/CardRecipe";
 import { useGetRecipesQuery } from "./services/recipe";
+// import 'react-chat-widget/lib/styles.css';
+
 
 const Home: FC<HeaderProps> = (props) => {
   const [direction, updateDirection] = useState<0 | 1 | 2 | 3>(0);

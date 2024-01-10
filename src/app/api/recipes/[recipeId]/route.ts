@@ -1,6 +1,6 @@
-import dbConnect from '@/lib/dbInstance';
-import RecipeSchema from '@/models/Recipe';
-
+import dbConnect from '../../../../lib/dbInstance';
+import RecipeSchema from '../../models/Recipe';
+import { NextResponse } from 'next/server';
 export async function handler(request: Request, ctx: { params: { recipeId: string } }) {
     await dbConnect();
     try {
@@ -14,6 +14,7 @@ export async function handler(request: Request, ctx: { params: { recipeId: strin
             status: 404,
         })
     }
+    return NextResponse.json({ });
 }
 
 export { handler as GET }

@@ -2,7 +2,7 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import IUser from '@/types/user';
-import UserSchema from '@/models/User';
+import UserSchema from '@/app/api/models/User';
 
 passport.serializeUser((user, done) => {
   done(null,);

@@ -12,13 +12,11 @@ export const recipeApi = api.injectEndpoints({
                 method: "GET",
             }),
         }),
-        sendMessage: build.mutation<string, Message>({
+        sendMessage: build.mutation<BaseResp<Message>, { prompt: string }>({
             query: (body) => ({
-                url: `/assistant/message`,
+                url: `/assistant`,
                 method: "POST",
-                body: {
-                    prompt: body.content
-                }
+                body
             }),
             async onQueryStarted(_, { queryFulfilled, dispatch }) {
                 const { data } = await queryFulfilled;
