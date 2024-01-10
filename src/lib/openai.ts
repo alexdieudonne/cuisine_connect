@@ -29,16 +29,13 @@ export async function getMessage(messages: sentToGpt[], prompt: string) {
         { role: 'user', content: prompt }
     ]
 
-    try {
         const gptResponse = await openai.chat.completions.create({
             model: process.env.OPENAI_MODEL_ID,
             messages: gptRequest,
             max_tokens: 400,
             temperature: 0.9,
         })
+        console.log("🚀 ~ getMessage ~ gptResponse:", gptResponse)
         return gptResponse.data.choices[0].message.content
-    } catch (e) {
-        console.error(e);
-        return 'une erreur est survenue'
-    }
+
 }
