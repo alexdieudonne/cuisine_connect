@@ -2,14 +2,15 @@
 
 import React from "react";
 import Image from "next/image";
-import { useGetRecipeQuery, useGetRecipeSupplementMutation } from "@/app/services/recipe";
+import { useGetRecipeQuery, useGetRecipeSupplementMutation, useGetShoppingListMutation } from "@/app/services/recipe";
 import { useParams } from "next/navigation";
 import { truncate } from "@/lib/utils";
 import SuggestRecipe from "@/components/Recipe/SuggestRecipe";
-import { supplementType } from "@/types/recipe";
+import { shoppingListType, supplementType } from "@/types/recipe";
 import { BaseResp } from "@/types/base";
 function Recipe() {
   const [supplement, setSupplement] = React.useState<supplementType>();
+  const [shoppingList, setShoppingList] = React.useState<shoppingListType>();
   const { recipeId } = useParams<{ recipeId: string }>();
   const {
     data: recipe,
@@ -21,6 +22,7 @@ function Recipe() {
   } = useGetRecipeQuery(recipeId);
 
   const [mutate, mutationState] = useGetRecipeSupplementMutation();
+  const [mutateShoppingList, mutationStateShoppingList] = useGetShoppingListMutation();
 
   if (isLoading || !recipe) return <div>Loading...</div>;
   return (
@@ -84,8 +86,44 @@ function Recipe() {
           <div className="mt-6">Loading...</div>
         )
       }
-      <div className="flex gap-2 mb-6 mt-12 flex-wrap">
+      {
+        supplement && (
+          <h1 className="text-left text-[25px] font-bold">Supplements</h1>
+        )
+      }
+      <div className="flex gap-2 mb-16 mt-12 flex-wrap">
         {supplement?.suggestedSupp.supplements.map((s, i) => (
+          <div className="rounded-3xl py-2 px-4 bg-black text-white" key={i}>{s}</div>
+        ))}
+      </div>
+      {
+        !shoppingList && (
+          <button className="mt-12 bg-gray-600 text-white px-4 py-2 rounded-md" onClick={
+            () => {
+              mutateShoppingList(recipeId)
+                .then((res) => {
+                  setShoppingList(((res as { data: shoppingListType; }).data) ?? []);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }}>
+            Generate shopping list
+          </button>
+        )
+      }
+      {
+        shoppingList && (
+          <h1 className="text-left text-[25px] font-bold">Shopping List</h1>
+        )
+      }
+      <div className="flex gap-2 mb-6 mt-12 flex-wrap">
+        {
+          mutationStateShoppingList.isLoading && (
+            <div className="mt-6">Loading...</div>
+          )
+        }
+        {shoppingList?.shoppingList.shoppingList.map((s, i) => (
           <div className="rounded-3xl py-2 px-4 bg-black text-white" key={i}>{s}</div>
         ))}
       </div>

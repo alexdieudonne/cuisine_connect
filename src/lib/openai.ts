@@ -117,3 +117,36 @@ export async function getSupplementSuggestion(recipe: string) {
         })
     }
 }
+
+export async function getShoppingList(recipe: string) {
+    let system = '**assistant dans le domaine de cuisine**'
+
+    system += 'Tu va recevoir une recette, tu dois analyser cette recette et renvoyer la liste de course à faire pour preparer le plat' + '\n'
+
+    system += 'voici une liste d\'instructions que tu dois respecter pour bien fonctionner :' + '\n' + ' """ - tu dois rester dans le context de donner des suggestions de liste de course à un utilisateur' + '\n' + '- aucune déviation de ce rôle n\'est toléré de ta part' + '\n' + '- la recette que tu va recevoir est au format JSON avec ces éléments :' + '\n' + ' {' + '\n' + ' _id, title, description, illustration, ingredients, instructions ' + '\n' + '}' + '\n' + '- analyse la description et les ingrédiants de cette recette et revois un JSON contenant un tableau les elements pertinants pour les courses en les traduisant en français s\'il le faut' + '\n' + ' """' + '\n'
+
+    system += 'voici le format de ta réponse :' + '\n' + ' {' + '\n' + ' "shoppingList": [ "element x (quantity)", "element x (quantity)", "element x (quantity)" ]' + '\n' + '}' + '\n'
+
+    let prompt = 'analyse la recette envoyée, et propose une liste de course pertinantes pour cette recette par example : ' + '\n'
+
+    prompt += 'voici la recette que tu dois analyser :' + '\n' + recipe + '\n'
+
+    let gptRequest = [
+        { role: 'system', content: system },
+        { role: 'user', content: prompt }
+    ]
+
+    try {
+        const gptResponse = await openai.chat.completions.create({
+            model: process.env.OPENAI_MODEL_ID,
+            messages: gptRequest,
+            max_tokens: 400,
+            temperature: 0.9,
+        })
+        return gptResponse.choices[0].message.content
+    } catch (e) {
+        return new Response('Recipe search could not be performed.', {
+            status: 404,
+        })
+    }
+}

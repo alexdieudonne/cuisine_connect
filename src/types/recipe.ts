@@ -12,3 +12,9 @@ export type supplementType = {
         supplements: string[]
     }
 } 
+
+export type shoppingListType = {
+    shoppingList: {
+        shoppingList: string[]
+    }
+}
