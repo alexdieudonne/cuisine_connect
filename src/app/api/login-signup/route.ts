@@ -1,8 +1,8 @@
-import dbConnect from '@/lib/dbInstance';
-import UserSchema from '@/models/User';
-import RecipeSchema from '@/models/Recipe';
+import dbConnect from '../../../lib/dbInstance';
+import UserSchema from '../../../models/User';
+import RecipeSchema from '../../../models/Recipe';
 import jwt from 'jsonwebtoken';
-import IUser from '@/types/user';
+import IUser from '../../../types/user';
 
 
 export async function handler(request: Request) {

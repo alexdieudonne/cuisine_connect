@@ -1,9 +1,9 @@
-import dbConnect from '@/lib/dbInstance';
-import { getMessage } from '@/lib/openai';
-import MessageSchema from '@/models/message';
-import UserSchema from '@/models/User';
-import Message, { messageFormSend } from '@/types/message';
-import IUser from '@/types/user';
+import dbConnect from '../../../lib/dbInstance';
+import { getMessage } from '../../../lib/openai';
+import MessageSchema from '../../../models/message';
+import UserSchema from '../../../models/User';
+import Message, { messageFormSend } from '../../../types/message';
+import IUser from '../../../types/user';
 import jwt from 'jsonwebtoken';
 
 export async function handler(request: Request) {
