@@ -7,7 +7,7 @@ import Header from "@/components/Header";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import { CookiesProvider } from "react-cookie";
-import ChatBot from "react-simple-chatbot";
+// import ChatBot from "react-simple-chatbot";
 import { useGetMessagesQuery } from "./services/assistant";
 
 export const fontSans = FontSans({
@@ -53,7 +53,7 @@ export default function RootLayout({
           >
             {children}
             <div className="fixed bottom-0 right-2">
-              <ChatBot steps={steps} />
+              {/* <ChatBot steps={steps} /> */}
             </div>
           </body>
         </html>

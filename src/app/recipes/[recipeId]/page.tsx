@@ -7,8 +7,9 @@ import { useParams } from "next/navigation";
 import { truncate } from "@/lib/utils";
 import SuggestRecipe from "@/components/Recipe/SuggestRecipe";
 import { supplementType } from "@/types/recipe";
+import { BaseResp } from "@/types/base";
 function Recipe() {
-  const [supplement, setSupplement] = React.useState<supplementType>();
+  const [supplement, setSupplement] = React.useState<BaseResp<supplementType>>();
   console.log("🚀 ~ Recipe ~ supplement:", supplement)
   const { recipeId } = useParams<{ recipeId: string }>();
   const {
@@ -67,9 +68,7 @@ function Recipe() {
         () => {
           mutate(recipeId)
             .then((res) => {
-              setSupplement((res as {
-                data: supplementType;
-              }).data ?? []);
+              setSupplement(((res as { data: BaseResp<supplementType> }).data as BaseResp<supplementType>) ?? []);
             })
             .catch((err) => {
               console.log(err);
@@ -78,7 +77,7 @@ function Recipe() {
         Suggest supplement
       </button>
       <div>
-        {supplement?.supplements.map((s, i) => (
+        {supplement?.data.supplements.map((s, i) => (
           <div key={i}>{s}</div>
         ))}
       </div>

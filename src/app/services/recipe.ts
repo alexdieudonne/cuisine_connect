@@ -1,3 +1,4 @@
+import { BaseResp } from "@/types/base";
 import api from "./api";
 import { Recipe, supplementType } from "@/types/recipe";
 
@@ -24,7 +25,7 @@ export const recipeApi = api.injectEndpoints({
                 method: "GET",
             })
         }),
-        getRecipeSupplement: build.mutation<supplementType, string>({
+        getRecipeSupplement: build.mutation<BaseResp<supplementType>, string>({
             query: (id) => ({
                 url: `/recipes/${id}/supplements`,
                 method: "POST",
