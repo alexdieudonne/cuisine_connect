@@ -1,3 +1,4 @@
+import { NextResponse } from 'next/server';
 import dbConnect from '../../../lib/dbInstance';
 import { getMessage } from '../../../lib/openai';
 import MessageSchema from '../../../models/Message';
@@ -21,8 +22,6 @@ export async function handler(request: Request) {
     const user__ = jwt.verify(token.split(' ')[1], 'TOP_SECRET') as unknown as { user: IUser };
     const user_ = user__.user;
 
-
-    console.log('here');
     await dbConnect();
     const messages = await MessageSchema.find<Message>({ user: user_._id })
         .sort({ createdAt: 'desc' })
@@ -103,6 +102,8 @@ export async function handler(request: Request) {
             }
             break;
     }
+
+    return NextResponse.json({ });
 }
 
 export { handler as GET, handler as POST }

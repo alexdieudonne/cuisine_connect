@@ -3,7 +3,7 @@ import UserSchema from '../../../models/User';
 import RecipeSchema from '../../../models/Recipe';
 import jwt from 'jsonwebtoken';
 import IUser from '../../../types/user';
-
+import { NextResponse } from 'next/server';
 
 export async function handler(request: Request) {
     const { method } = request;
@@ -55,6 +55,7 @@ export async function handler(request: Request) {
             // res.status(405).send(`Method ${method} is not allowed.`);
             break;
     }
+    return NextResponse.json({ });
 }
 
 export { handler as GET, handler as POST }

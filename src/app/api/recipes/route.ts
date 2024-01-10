@@ -1,6 +1,6 @@
 import dbConnect from '../../../lib/dbInstance';
 import RecipeSchema from '../../../models/Recipe';
-
+import { NextResponse } from 'next/server';
 export async function handler(request: Request) {
     const { pathname } = new URL(request.url)
     const { method } = request
@@ -21,6 +21,7 @@ export async function handler(request: Request) {
         default:
             return new Response('Not found', { status: 404 })
     }
+    return NextResponse.json({ });
 }
 
 export { handler as GET, handler as POST }
