@@ -12,8 +12,8 @@ export const api = createApi({
     prepareHeaders: async (headers, { getState, endpoint }) => {
       const token = (getState() as RootState).auth.token;
       if (token && endpoint !== "downloadCompanyFile") {
-        headers.set("Authorization", `Bearer ${token}`);
       }
+      headers.set("Authorization", `Bearer ${token}`);
 
       return headers;
     },

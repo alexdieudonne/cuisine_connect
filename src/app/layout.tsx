@@ -7,8 +7,7 @@ import Header from "@/components/Header";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import { CookiesProvider } from "react-cookie";
-// import ChatBot from "react-simple-chatbot";
-import { useGetMessagesQuery } from "./services/assistant";
+import ChatComponent from "@/components/home/ChatComponent";
 
 export const fontSans = FontSans({
   subsets: ["latin"],
@@ -20,27 +19,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const steps = [
-    {
-      id: "0",
-      message: "Welcome to react chatbot!",
-      trigger: "1",
-    },
-    {
-      id: "1",
-      message: "Bye!",
-      end: true,
-    },
-  ];
-
-  const {
-    data,
-    isLoading,
-    isError,
-    error,
-  } = useGetMessagesQuery()
-
-
   return (
     <CookiesProvider defaultSetOptions={{ path: "/" }}>
       <Provider store={store}>
@@ -52,9 +30,7 @@ export default function RootLayout({
             )}
           >
             {children}
-            <div className="fixed bottom-0 right-2">
-              {/* <ChatBot steps={steps} /> */}
-            </div>
+            <ChatComponent />
           </body>
         </html>
       </Provider>
