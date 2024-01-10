@@ -29,8 +29,8 @@ export default function RootLayout({
               fontSans.variable
             )}
           >
-            {children}
             <ChatComponent />
+            {children}
           </body>
         </html>
       </Provider>

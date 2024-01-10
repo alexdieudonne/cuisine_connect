@@ -1,40 +1,58 @@
-import { useGetMessagesQuery } from "@/app/services/assistant";
-import React, { useCallback } from "react";
+import { useGetMessagesQuery, useSendMessageMutation } from "@/app/services/assistant";
+import { authApi } from "@/app/services/auth";
+import { setCredentials } from "@/app/services/slices/authSlice";
+import { Widget, addResponseMessage, addUserMessage } from "react-chat-widget";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { useCookies } from "react-cookie";
+import { useDispatch } from "react-redux";
 import ChatBot from "react-simple-chatbot";
+import "react-chat-widget/lib/styles.css";
 
 function ChatComponent() {
-  const { data, isLoading, isError, error } = useGetMessagesQuery();
+  useEffect(() => {
+    dispatch(setCredentials({ user: cookies.user, token: cookies.token }));
+  }, []);
 
-  useCallback(() => {
-    console.log(data);
+  const { data, isLoading, isError, error } = useGetMessagesQuery();
+  const [mutation, data_ ] = useSendMessageMutation()
+
+  const dispatch = useDispatch();
+  const [cookies, setCookie, removeCookie] = useCookies(["user", "token"]);
+  const [chatWindowOpen, setChatWindowOpen] = useState(true);
+
+  useMemo(() => {
+    if (data) {
+      data.data.forEach((m) => {
+        if (m.role === "assistant") {
+          return addResponseMessage(m.content);
+        } else {
+          return addUserMessage(m.content);
+        }
+      });
+    }
   }, [data]);
 
-  const messages =
-    data?.data?.map((m, i) => ({
-      id: m._id,
-      message: m.content,
-      trigger: i,
-    })) ?? steps;
+  const handleToggle = (open) => {
+    setChatWindowOpen((prev) => !prev);
+  };
+  const messages = data?.data?.map((m, i) => {
+    const trigger = i === data.data.length - 1 ? m._id : data.data[i + 1]._id;
+    return { id: m._id, message: m.content, user: m.role === "user", trigger };
+  });
+
+  const handleNewUserMessage = (newMessage: string) => {
+    
+    // Now send the message throught the backend API
+  };
+
   if (isLoading) return <div>Loading...</div>;
   //   if (isError) return <div>{error}</div>;
   return (
-    <div className="fixed bottom-0 right-2">
-      <ChatBot steps={messages} />
-    </div>
+    <Widget
+      handleToggle={handleToggle}
+      handleNewUserMessage={handleNewUserMessage}
+    />
   );
 }
-
-const steps = [
-  {
-    id: "0",
-    message: "Welcome to react chatbot!",
-    trigger: "1",
-  },
-  {
-    id: "1",
-    message: "Bye!",
-    end: true,
-  },
-];
 
 export default ChatComponent;
