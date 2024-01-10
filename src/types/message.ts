@@ -1,5 +1,5 @@
 
-export default interface message {
+export default interface Message {
     user: string
     content: string
     createdAt?: string
@@ -8,7 +8,6 @@ export default interface message {
 
 export interface messageFormSend {
     user: string
-    messages?: message[]
     prompt: string
 }
 

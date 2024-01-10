@@ -14,7 +14,7 @@ export async function handler(request: Request, ctx: { params: { recipeId: strin
         }
         return Response.json({
             status: 'success',
-            data: suggestedRecipes
+            data: suggestedRecipes.filter((recipe) => recipe._id != ctx.params.recipeId)
         })
     } catch (e) {
         console.error(e);
