@@ -6,9 +6,9 @@ import { BaseResp } from "@/types/base";
 
 export const recipeApi = api.injectEndpoints({
     endpoints: (build) => ({
-        getMessages: build.query<BaseResp<Recipe[]>, void>({
+        getMessages: build.query<BaseResp<Message[]>, void>({
             query: () => ({
-                url: `/recipes`,
+                url: `/assistant`,
                 method: "GET",
             }),
         }),

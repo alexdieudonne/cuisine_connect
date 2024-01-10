@@ -1,8 +1,10 @@
 
 export default interface Message {
+    _id: string
     user: string
     content: string
     createdAt?: string
+    updatedAt?: string
     role: 'assistant' | 'user'
 }
 
