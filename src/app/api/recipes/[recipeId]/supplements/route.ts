@@ -9,10 +9,7 @@ export async function handler(request: Request, ctx: { params: { recipeId: strin
         let suggestedSupp = await getSupplementSuggestion(recipe)
         suggestedSupp = JSON.parse(suggestedSupp)
         return Response.json({
-            status: 'success',
-            data: {
-                suggestedSupp
-            }
+            suggestedSupp
         })
     } catch (e) {
         console.error(e);

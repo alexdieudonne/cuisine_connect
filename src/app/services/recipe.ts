@@ -25,7 +25,7 @@ export const recipeApi = api.injectEndpoints({
                 method: "GET",
             })
         }),
-        getRecipeSupplement: build.mutation<BaseResp<supplementType>, string>({
+        getRecipeSupplement: build.mutation<supplementType, string>({
             query: (id) => ({
                 url: `/recipes/${id}/supplements`,
                 method: "POST",

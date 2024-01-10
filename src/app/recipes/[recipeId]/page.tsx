@@ -9,8 +9,7 @@ import SuggestRecipe from "@/components/Recipe/SuggestRecipe";
 import { supplementType } from "@/types/recipe";
 import { BaseResp } from "@/types/base";
 function Recipe() {
-  const [supplement, setSupplement] = React.useState<BaseResp<supplementType>>();
-  console.log("🚀 ~ Recipe ~ supplement:", supplement)
+  const [supplement, setSupplement] = React.useState<supplementType>();
   const { recipeId } = useParams<{ recipeId: string }>();
   const {
     data: recipe,
@@ -64,21 +63,30 @@ function Recipe() {
         <h3>{recipe?.title}</h3>
         <div dangerouslySetInnerHTML={{ __html: recipe.instructions }} />
       </article>
-      <button className="mt-6 bg-blue-500 text-white px-4 py-2 rounded-md" onClick={
-        () => {
-          mutate(recipeId)
-            .then((res) => {
-              setSupplement(((res as { data: BaseResp<supplementType> }).data as BaseResp<supplementType>) ?? []);
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        }}>
-        Suggest supplement
-      </button>
-      <div>
-        {supplement?.data.supplements.map((s, i) => (
-          <div key={i}>{s}</div>
+      {
+        !supplement && (
+          <button className="mt-12 bg-gray-600 text-white px-4 py-2 rounded-md" onClick={
+            () => {
+              mutate(recipeId)
+                .then((res) => {
+                  setSupplement(((res as { data: supplementType; }).data) ?? []);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }}>
+            Suggest supplement
+          </button>
+        )
+      }
+      {
+        mutationState.isLoading && (
+          <div className="mt-6">Loading...</div>
+        )
+      }
+      <div className="flex gap-2 mb-6 mt-12 flex-wrap">
+        {supplement?.suggestedSupp.supplements.map((s, i) => (
+          <div className="rounded-3xl py-2 px-4 bg-black text-white" key={i}>{s}</div>
         ))}
       </div>
       <SuggestRecipe recipeId={recipeId} />

@@ -8,5 +8,7 @@ export type Recipe = {
 }
 
 export type supplementType = {
-    supplements: string[]
+    suggestedSupp: {
+        supplements: string[]
+    }
 } 
