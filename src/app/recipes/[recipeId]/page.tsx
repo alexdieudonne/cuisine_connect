@@ -40,15 +40,14 @@ function Recipe() {
             <div className="mt-3">
               <h3 className="text-md font-bold text-white">Ingredients</h3>
               <ul className="mt-2 flex gap-x-2">
-                <li className="rounded-xl border w-fit text-sm text-white px-2 py-[.5]">
-                  Poulet
-                </li>
-                <li className="rounded-xl border w-fit text-sm text-white px-2 py-[.5]">
-                  Poulet
-                </li>
-                <li className="rounded-xl border w-fit text-sm text-white px-2 py-[.5]">
-                  Poulet
-                </li>
+                {recipe.ingredients.map((r, i) => (
+                  <li
+                    key={r}
+                    className="rounded-xl border w-fit text-sm text-white px-2 py-[.5]"
+                  >
+                    {r}
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
@@ -57,7 +56,7 @@ function Recipe() {
 
       <article className="mt-6">
         <h3>{recipe?.title}</h3>
-        <div dangerouslySetInnerHTML={{ __html: recipe.description }} />
+        <div dangerouslySetInnerHTML={{ __html: recipe.instructions }} />
       </article>
 
       <SuggestRecipe recipeId={recipeId} />
