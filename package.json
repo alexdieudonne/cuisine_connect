@@ -47,6 +47,7 @@
     "react-hook-form": "^7.45.4",
     "react-image-crop": "^10.1.5",
     "react-redux": "^9.0.4",
+    "react-simple-chatbot": "^0.6.1",
     "react-wrap-balancer": "^1.1.0",
     "recharts": "^2.7.3",
     "superjson": "1.13.1",

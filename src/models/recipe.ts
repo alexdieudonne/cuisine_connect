@@ -22,7 +22,7 @@ const RecipeSchema = new mongoose.Schema({
         required: [true, 'Please provide ingredients for this recipe.'],
     },
     instructions: {
-        type: Array,
+        type: String,
         required: [true, 'Please provide instructions for this recipe.'],
     },
 });

@@ -33,7 +33,7 @@ const Home: FC<HeaderProps> = (props) => {
     updateArrowClass(classes[direction] as string);
   }, [direction]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading || !recipes) return <div>Loading...</div>;
 
   return (
     <>
