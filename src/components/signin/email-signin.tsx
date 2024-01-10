@@ -15,14 +15,21 @@ import {
 import * as Icons from "@/components/ui/icons";
 import { useLoginMutation } from "@/app/services/auth";
 import { IUserFormSend } from "@/types/user";
+import { useRouter } from "next/navigation";
+import { useCookies } from "react-cookie";
+
+const validationSchema = Yup.object({
+  email: Yup.string().email("Invalid email address").required("Required"),
+});
 
 export function EmailSignIn() {
+  const router = useRouter();
+
   const [mutateAsync, result] = useLoginMutation();
-  const validationSchema = Yup.object({
-    email: Yup.string().email("Invalid email address").required("Required"),
-  });
 
   const formikRef = useRef<FormikProps<IUserFormSend>>(null);
+
+  const [cookies, setCookie, removeCookie] = useCookies(["user", "token"]);
 
   const onSubmitClickHandler: FormikConfig<IUserFormSend>["onSubmit"] = (
     values,
@@ -30,15 +37,21 @@ export function EmailSignIn() {
   ) => {
     async function submit() {
       await setSubmitting(true);
-      
+
       await mutateAsync(values)
         .unwrap()
+        .then((data) => {
+          setCookie("user", data.data.user._id);
+          setCookie("token", data.data.token);
+          setSubmitting(false);
+          router.push(`/${data.data.user._id}`);
+        })
         .catch((error) => {
           setErrors({
             email: "An error has occured",
           });
         });
-      setSubmitting(false);
+      await setSubmitting(false);
     }
     submit();
   };

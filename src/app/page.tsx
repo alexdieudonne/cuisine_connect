@@ -3,10 +3,21 @@
 import { FC, useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Image from "next/image";
+import CardRecipe from "@/components/home/CardRecipe";
+import { useGetRecipesQuery } from "./services/recipe";
 
 const Home: FC<HeaderProps> = (props) => {
   const [direction, updateDirection] = useState<0 | 1 | 2 | 3>(0);
   const [arrowClass, updateArrowClass] = useState("arrow-right");
+
+  const {
+    data: recipes,
+    isLoading,
+    error,
+    isFetching,
+    isSuccess,
+    isError,
+  } = useGetRecipesQuery();
 
   useEffect(() => {
     updateDirection(0);
@@ -21,6 +32,8 @@ const Home: FC<HeaderProps> = (props) => {
     };
     updateArrowClass(classes[direction] as string);
   }, [direction]);
+
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <>
@@ -72,23 +85,19 @@ const Home: FC<HeaderProps> = (props) => {
                 placeholder="What's cooking ?"
               />
             </div>
-            <div>
-              <span>
-                Filters{" "}
-                <p>
-                  <i className={arrowClass}></i>
-                </p>
-              </span>
-            </div>
           </div>
         </section>
 
         <section className="bg-white py-10 px-8 justify-center flex flex-col items-start gap-10">
           <div>
             <h3 className="uppercase text-inter font-bold	text-xl text-black">
-              Latest
+              Our recipies
             </h3>
-            <div></div>
+            <div className="mt-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {recipes.map((v, i) => (
+                <CardRecipe key={v._id} recipe={v} />
+              ))}
+            </div>
           </div>
         </section>
       </main>

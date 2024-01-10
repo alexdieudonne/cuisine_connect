@@ -5,5 +5,9 @@ const nextConfig = {
         transpilePackages: ["ui"],
         runtime: "experimental-edge",
     },
+    images: {
+        domains: ["images.unsplash.com", "www.allrecipes.com"],
+    },
+
 };
 module.exports = nextConfig
