@@ -11,7 +11,7 @@ const CardRecipe: FC<CardRecipeProps> = ({ recipe }) => {
   return (
     <a
       href={`/recipes/${recipe._id}`}
-      className="border w-80 h-80 rounded-xl overflow-hidden relative"
+      className="border w-80 h-80 rounded-xl overflow-hidden relative block"
     >
       <Image
         src={recipe.illustration}

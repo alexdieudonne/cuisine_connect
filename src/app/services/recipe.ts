@@ -1,6 +1,4 @@
-import { LoginResp } from "@/types/auth";
 import api from "./api";
-import { resetCredentials, setCredentials } from "./slices/authSlice";
 import { Recipe } from "@/types/recipe";
 
 
@@ -17,6 +15,12 @@ export const recipeApi = api.injectEndpoints({
                 url: `/recipes/${id}`,
                 method: "GET",
             })
+        }),
+        getSuggestions: build.query<Recipe[], string>({
+            query: (id) => ({
+                url: `/recipes/${id}/suggestions`,
+                method: "GET",
+            })
         })
     }),
     overrideExisting: true,
@@ -24,5 +28,6 @@ export const recipeApi = api.injectEndpoints({
 
 export const {
     useGetRecipesQuery,
-    useGetRecipeQuery
+    useGetRecipeQuery,
+    useGetSuggestionsQuery,
 } = recipeApi;

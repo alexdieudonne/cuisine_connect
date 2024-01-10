@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useGetRecipeQuery } from "@/app/services/recipe";
 import { useParams } from "next/navigation";
 import { truncate } from "@/lib/utils";
+import SuggestRecipe from "@/components/Recipe/SuggestRecipe";
 function Recipe() {
   const { recipeId } = useParams<{ recipeId: string }>();
   const {
@@ -16,7 +17,7 @@ function Recipe() {
     isError,
   } = useGetRecipeQuery(recipeId);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading || !recipe) return <div>Loading...</div>;
   return (
     <div className="flex justify-center flex-col items-center">
       <div className="border w-full h-[450px] rounded-sm overflow-hidden relative">
@@ -30,9 +31,12 @@ function Recipe() {
         <div className="z-3 absolute bottom-0 p-3 w-full bg-black bg-opacity-20	h-full">
           <div className="absolute bottom-3">
             <h3 className="text-white text-xl font-bold">{recipe.title}</h3>
-            <p dangerouslySetInnerHTML={{
-                __html: truncate(recipe.description, 100)
-            }} className="text-white text-sm"/>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: truncate(recipe.description, 100),
+              }}
+              className="text-white text-sm"
+            />
             <div className="mt-3">
               <h3 className="text-md font-bold text-white">Ingredients</h3>
               <ul className="mt-2 flex gap-x-2">
@@ -55,6 +59,8 @@ function Recipe() {
         <h3>{recipe?.title}</h3>
         <div dangerouslySetInnerHTML={{ __html: recipe.description }} />
       </article>
+
+      <SuggestRecipe recipeId={recipeId} />
     </div>
   );
 }
