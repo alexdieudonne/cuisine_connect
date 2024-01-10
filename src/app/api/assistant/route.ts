@@ -2,23 +2,36 @@ import dbConnect from '@/lib/dbInstance';
 import { getMessage } from '@/lib/openai';
 import MessageSchema from '@/models/message';
 import UserSchema from '@/models/User';
-import { messageFormSend } from '@/types/message';
+import Message, { messageFormSend } from '@/types/message';
 import IUser from '@/types/user';
-
+import jwt from 'jsonwebtoken';
 
 export async function handler(request: Request) {
     const { method } = request;
+    const token = request.headers.get("Authorization");
 
-    const body = await request.json();
+    if (!token) {
+        return Response.json({
+            message: 'not-allowed',
+        }, {
+            status: 401,
+        })
+    }
 
+    const user__ = jwt.verify(token.split(' ')[1], 'TOP_SECRET') as unknown as { user: IUser };
+    const user_ = user__.user;
+
+
+    console.log('here');
     await dbConnect();
+    const messages = await MessageSchema.find<Message>({ user: user_._id })
+        .sort({ createdAt: 'desc' })
+
 
     switch (method) {
         case 'GET':
             try {
-                const messages = await MessageSchema.find({ user: (body as IUser)._id })
-                    .sort({ createdAt: 'desc' })
-                    .lean()
+
                 return Response.json({
                     status: 'success',
                     data: messages
@@ -30,11 +43,12 @@ export async function handler(request: Request) {
                 })
             }
         case 'POST':
+            const body = await request.json();
             try {
                 if (!(body as messageFormSend).prompt)
                     throw new Error('no text provided')
 
-                let user = await UserSchema.findOne<IUser | null>({ _id: (body as messageFormSend).user });
+                let user = await UserSchema.findOne<IUser | null>({ _id: user_._id });
                 if (!user) {
                     return Response.json({
                         message: 'not-allowed',
@@ -49,7 +63,12 @@ export async function handler(request: Request) {
                     role: 'user'
                 })
 
-                const gptOutput = await getMessage((body as messageFormSend).messages ?? [], (body as messageFormSend).prompt)
+                const gptOutput = await getMessage(messages.map(msg => {
+                    return {
+                        content: msg.content,
+                        role: msg.role
+                    }
+                }), (body as messageFormSend).prompt)
 
                 const message = await MessageSchema.create({
                     user: user._id,

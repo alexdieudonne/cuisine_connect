@@ -33,7 +33,7 @@ export async function handler(request: Request) {
                         email: (body as IUser).email,
                     }).then((user) => user.toObject())
                 }
-                const token = jwt.sign({ user: { email: user!.email } }, 'TOP_SECRET');
+                const token = jwt.sign({ user }, 'TOP_SECRET');
                 return Response.json({
                     status: 'success',
                     data: {
