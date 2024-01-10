@@ -5,7 +5,7 @@ export async function handler(request: Request, ctx: { params: { recipeId: strin
     await dbConnect();
     try {
         const recipes = await RecipeSchema.findById(ctx.params.recipeId)
-        return new Response(JSON.stringify(recipes), {
+        return new Response(JSON.stringify([recipes]), {
             headers: { 'content-type': 'application/json' },
         })
     } catch (e) {
