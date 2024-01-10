@@ -2,11 +2,14 @@
 
 import React from "react";
 import Image from "next/image";
-import { useGetRecipeQuery } from "@/app/services/recipe";
+import { useGetRecipeQuery, useGetRecipeSupplementMutation } from "@/app/services/recipe";
 import { useParams } from "next/navigation";
 import { truncate } from "@/lib/utils";
 import SuggestRecipe from "@/components/Recipe/SuggestRecipe";
+import { supplementType } from "@/types/recipe";
 function Recipe() {
+  const [supplement, setSupplement] = React.useState<supplementType>();
+  console.log("🚀 ~ Recipe ~ supplement:", supplement)
   const { recipeId } = useParams<{ recipeId: string }>();
   const {
     data: recipe,
@@ -16,6 +19,8 @@ function Recipe() {
     isSuccess,
     isError,
   } = useGetRecipeQuery(recipeId);
+
+  const [mutate, mutationState] = useGetRecipeSupplementMutation();
 
   if (isLoading || !recipe) return <div>Loading...</div>;
   return (
@@ -58,9 +63,25 @@ function Recipe() {
         <h3>{recipe?.title}</h3>
         <div dangerouslySetInnerHTML={{ __html: recipe.instructions }} />
       </article>
-      <button className="mt-6 bg-blue-500 text-white px-4 py-2 rounded-md">
-        Suggest suppelement
+      <button className="mt-6 bg-blue-500 text-white px-4 py-2 rounded-md" onClick={
+        () => {
+          mutate(recipeId)
+            .then((res) => {
+              setSupplement((res as {
+                data: supplementType;
+              }).data ?? []);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }}>
+        Suggest supplement
       </button>
+      <div>
+        {supplement?.supplements.map((s, i) => (
+          <div key={i}>{s}</div>
+        ))}
+      </div>
       <SuggestRecipe recipeId={recipeId} />
     </div>
   );

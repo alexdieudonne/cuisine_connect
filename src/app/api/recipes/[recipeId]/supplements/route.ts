@@ -11,7 +11,6 @@ export async function handler(request: Request, ctx: { params: { recipeId: strin
         return Response.json({
             status: 'success',
             data: {
-                recipe,
                 suggestedSupp
             }
         })
@@ -23,4 +22,4 @@ export async function handler(request: Request, ctx: { params: { recipeId: strin
     }
 }
 
-export { handler as GET }
+export { handler as POST }

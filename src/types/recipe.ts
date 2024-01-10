@@ -6,3 +6,7 @@ export type Recipe = {
     instructions: string
     ingredients: string[];
 }
+
+export type supplementType = {
+    supplements: string[]
+} 
