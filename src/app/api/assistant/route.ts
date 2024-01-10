@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '../../../lib/dbInstance';
 import { getMessage } from '../../../lib/openai';
-import MessageSchema from '../../../models/Message';
-import UserSchema from '../../../models/User';
+import MessageSchema from '../models/Message';
+import UserSchema from '../models/User';
 import Message, { messageFormSend } from '../../../types/message';
 import IUser from '../../../types/user';
 import jwt from 'jsonwebtoken';

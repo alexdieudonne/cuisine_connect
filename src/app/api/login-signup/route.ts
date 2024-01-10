@@ -1,6 +1,6 @@
 import dbConnect from '../../../lib/dbInstance';
-import UserSchema from '../../../models/User';
-import RecipeSchema from '../../../models/Recipe';
+import UserSchema from '../models/User';
+import RecipeSchema from '../models/Recipe';
 import jwt from 'jsonwebtoken';
 import IUser from '../../../types/user';
 import { NextResponse } from 'next/server';

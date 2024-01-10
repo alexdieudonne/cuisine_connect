@@ -1,6 +1,6 @@
 import dbConnect from '../../../../../lib/dbInstance';
 import { getSupplementSuggestion } from '../../../../../lib/openai';
-import RecipeSchema from '../../../../../models/Recipe';
+import RecipeSchema from '../../../models/Recipe';
 import { NextResponse } from 'next/server';
 export async function handler(request: Request, ctx: { params: { recipeId: string } }) {
     await dbConnect();
