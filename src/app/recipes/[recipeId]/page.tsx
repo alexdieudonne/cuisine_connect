@@ -2,11 +2,14 @@
 
 import React from "react";
 import Image from "next/image";
-import { useGetRecipeQuery } from "@/app/services/recipe";
+import { useGetRecipeQuery, useGetRecipeSupplementMutation } from "@/app/services/recipe";
 import { useParams } from "next/navigation";
 import { truncate } from "@/lib/utils";
 import SuggestRecipe from "@/components/Recipe/SuggestRecipe";
+import { supplementType } from "@/types/recipe";
+import { BaseResp } from "@/types/base";
 function Recipe() {
+  const [supplement, setSupplement] = React.useState<supplementType>();
   const { recipeId } = useParams<{ recipeId: string }>();
   const {
     data: recipe,
@@ -16,6 +19,8 @@ function Recipe() {
     isSuccess,
     isError,
   } = useGetRecipeQuery(recipeId);
+
+  const [mutate, mutationState] = useGetRecipeSupplementMutation();
 
   if (isLoading || !recipe) return <div>Loading...</div>;
   return (
@@ -33,7 +38,7 @@ function Recipe() {
             <h3 className="text-white text-xl font-bold">{recipe.title}</h3>
             <p
               dangerouslySetInnerHTML={{
-                __html: truncate(recipe.description??"", 100),
+                __html: truncate(recipe.description ?? "", 100),
               }}
               className="text-white text-sm"
             />
@@ -58,7 +63,32 @@ function Recipe() {
         <h3>{recipe?.title}</h3>
         <div dangerouslySetInnerHTML={{ __html: recipe.instructions }} />
       </article>
-
+      {
+        !supplement && (
+          <button className="mt-12 bg-gray-600 text-white px-4 py-2 rounded-md" onClick={
+            () => {
+              mutate(recipeId)
+                .then((res) => {
+                  setSupplement(((res as { data: supplementType; }).data) ?? []);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }}>
+            Suggest supplement
+          </button>
+        )
+      }
+      {
+        mutationState.isLoading && (
+          <div className="mt-6">Loading...</div>
+        )
+      }
+      <div className="flex gap-2 mb-6 mt-12 flex-wrap">
+        {supplement?.suggestedSupp.supplements.map((s, i) => (
+          <div className="rounded-3xl py-2 px-4 bg-black text-white" key={i}>{s}</div>
+        ))}
+      </div>
       <SuggestRecipe recipeId={recipeId} />
     </div>
   );

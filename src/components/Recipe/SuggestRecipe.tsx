@@ -22,10 +22,12 @@ const SuggestRecipe: FC<SuggestRecipeProps> = ({ recipeId }) => {
   return (
     <div className="relative block w-full">
       <h2 className="font-bold text-xl mt-6 mb-2">Suggestions</h2>
-      <div className="overflow-x-scroll flex gap-x-2">
-        {recipes?.data?.map((recipe) => {
-          return <CardRecipe recipe={recipe} key={recipe._id} />;
-        })}
+      <div className="overflow-x-scroll">
+        <div className="flex gap-x-2 py-2">
+          {recipes?.data?.map((recipe) => {
+            return <CardRecipe recipe={recipe} key={recipe._id} />;
+          })}
+        </div>
       </div>
     </div>
   );

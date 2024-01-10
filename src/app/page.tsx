@@ -90,7 +90,7 @@ const Home: FC<HeaderProps> = (props) => {
           </div>
         </section>
 
-        <section className="bg-white py-10 px-8 justify-center flex flex-col items-start gap-10">
+        <section className="bg-white py-10 px-8 justify-center flex flex-col items-center gap-10">
           <div>
             <h3 className="uppercase text-inter font-bold	text-xl text-black">
               Our recipies

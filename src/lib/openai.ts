@@ -90,7 +90,7 @@ export async function getSupplementSuggestion(recipe: string) {
 
     system += 'Tu va recevoir une recette, tu dois analyser cette recette et renvoyer une liste d\'ingrédients qui peuvent être utilisés pour accompagner cette recette' + '\n'
 
-    system += 'voici une liste d\'instructions que tu dois respecter pour bien fonctionner :' + '\n' + ' """ - tu dois rester dans le context de donner des suggestions d\'ingrédients à un utilisateur' + '\n' + '- aucune déviation de ce rôle n\'est toléré de ta part' + '\n' + '- la recette que tu va recevoir est au format JSON avec ces éléments :' + '\n' + ' {' + '\n' + ' _id, title, description, illustration, ingredients, instructions ' + '\n' + '}' + '\n' + '- analyse la description et les ingrédiants de cette recette et revois un JSON contenant un tableau des accompagnements pertinants' + '\n' + ' """' + '\n'
+    system += 'voici une liste d\'instructions que tu dois respecter pour bien fonctionner :' + '\n' + ' """ - tu dois rester dans le context de donner des suggestions d\'ingrédients à un utilisateur' + '\n' + '- aucune déviation de ce rôle n\'est toléré de ta part' + '\n' + '- la recette que tu va recevoir est au format JSON avec ces éléments :' + '\n' + ' {' + '\n' + ' _id, title, description, illustration, ingredients, instructions ' + '\n' + '}' + '\n' + '- analyse la description et les ingrédiants de cette recette et revois un JSON contenant un tableau des accompagnements pertinants en les traduisant en français s\'il le faut' + '\n' + ' """' + '\n'
 
     system += 'voici le format de ta réponse :' + '\n' + ' {' + '\n' + ' "supplements": [ "ingredient", "ingredient", "ingredient" ]' + '\n' + '}' + '\n'
 

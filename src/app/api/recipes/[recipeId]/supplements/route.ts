@@ -6,20 +6,10 @@ export async function handler(request: Request, ctx: { params: { recipeId: strin
     await dbConnect();
     try {
         const recipe = await RecipeSchema.findById(ctx.params.recipeId)
-        console.log("🚀 ~ handler ~ ctx.params.recipeId:", ctx.params.recipeId)
-        console.log("🚀 ~ handler ~ recipe:", recipe)
         let suggestedSupp = await getSupplementSuggestion(recipe)
-        console.log("🚀 ~ handler ~ suggestedSupp:", suggestedSupp)
         suggestedSupp = JSON.parse(suggestedSupp)
-        if (suggestedSupp) {
-            suggestedSupp = await RecipeSchema.find({ _id: { $in: suggestedSupp.supplements } })
-        }
         return Response.json({
-            status: 'success',
-            data: {
-                recipe,
-                suggestedSupp
-            }
+            suggestedSupp
         })
     } catch (e) {
         console.error(e);
@@ -29,4 +19,4 @@ export async function handler(request: Request, ctx: { params: { recipeId: strin
     }
 }
 
-export { handler as GET }
+export { handler as POST }
